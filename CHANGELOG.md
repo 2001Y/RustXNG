@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-11-01
+
+導入のしやすさと発見性を整え、OSS として配布物を完成させました。
+
+### Added
+
+- **Docker イメージを GHCR へ公開**（`.github/workflows/docker.yml`）— タグ push で `ghcr.io/sahenjp/rustxng:<version>` と `:latest` を発行。公開後にコンテナを起動して `/healthz` を確認するスモークテスト付き
+- **英語 README を主に**（`README.md`）、日本語は `README.ja.md` へ。相互リンクを更新
+- **導入方法を4通り明記**: ビルド済みバイナリ / `cargo install` / Docker / ソースから
+- **リポジトリの説明とトピックを AI 向けに更新**（ai-agents / grounding / llm / mcp / rag / self-hosted を追加）
+- **ラベル整備**（engine / ranking / performance / security / benchmark / backlog）
+
+### Fixed
+
+- **README の Docker 手順が事実と違っていた** — 未公開の `ghcr.io` イメージから取得するよう書いていた。公開ワークフローを追加し、記載を実態に合わせた
+- **28 MB の JSON が git に追跡されていた** — `bench/content-*.json` は再生成可能なため追跡を外した（HEAD の最大ファイルは 896 KB に）。履歴の掃除手順は CONTRIBUTING に記載
+
+### Tests
+
+- 797 ユニット + 17 統合、clippy 0、markdownlint 0
+
 ## [0.25.0] - 2026-11-01
 
 **AI エージェントの情報取得層**として位置づけを明確にし、その前提となる SSRF 対策を強化しました。
