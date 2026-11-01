@@ -48,10 +48,18 @@ This installs two binaries: `rustxng` (the server) and `rustxng-index` (the opti
 ### 3. Docker
 
 ```bash
-docker run -p 8888:8888 ghcr.io/sahenjp/rustxng:latest
+git clone https://github.com/sahenjp/RustXNG.git && cd RustXNG
+docker build -t rustxng .
+docker run -p 8888:8888 rustxng
 ```
 
-The image serves `/healthz`; mount your own `settings.toml` to change behaviour.
+The image serves `/healthz`. Mount your own `settings.toml` to change behaviour:
+
+```bash
+docker run -p 8888:8888 -v "$PWD/settings.toml:/app/settings.toml:ro" rustxng
+```
+
+> A prebuilt image is not published yet; the CI builds one to prove the Dockerfile works.
 
 ### 4. From source
 

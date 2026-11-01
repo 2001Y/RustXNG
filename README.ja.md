@@ -41,6 +41,47 @@ Google・Bing・Wikipedia・GitHub など **200 以上の検索サイトをま�
 - **自前インデックス（実験機能・既定オフ）** — 自分でクロールしたページを BM25 で索引し、上流の結果に併合できる。`local_index_path` を設定したときだけ動く
 - **rdsh から直接使える** — 既定ポート 8888 が rdsh の探索先と一致。`rdsh search-web --engine rustxng` でそのまま動く
 
+## 導入
+
+### 1. ビルド済みバイナリ（最短）
+
+[Releases](https://github.com/sahenjp/RustXNG/releases/latest) から環境に合うものを取得し、`PATH` に置きます。
+
+```bash
+curl -fsSL -o rustxng \
+  https://github.com/sahenjp/RustXNG/releases/latest/download/rustxng-v0.25.0-x86_64-unknown-linux-musl
+chmod +x rustxng && ./rustxng --version
+```
+
+実行前に、各アセットの隣に公開されている `.sha256` と照合してください。
+
+### 2. Cargo
+
+```bash
+cargo install --git https://github.com/sahenjp/RustXNG.git --tag v0.25.0
+```
+
+`rustxng`（サーバー）と `rustxng-index`（任意のローカルインデックス）の2つが入ります。Rust 1.85 以降が必要です。
+
+### 3. Docker
+
+```bash
+git clone https://github.com/sahenjp/RustXNG.git && cd RustXNG
+docker build -t rustxng .
+docker run -p 8888:8888 rustxng
+```
+
+設定を差し替える場合: `-v "$PWD/settings.toml:/app/settings.toml:ro"`。ビルド済みイメージは未公開です（CI でビルド検証のみ）。
+
+### 4. ソースから
+
+```bash
+git clone https://github.com/sahenjp/RustXNG.git
+cd RustXNG
+cargo build --release
+./target/release/rustxng
+```
+
 ## 使い方
 
 ### バイナリを入手する
