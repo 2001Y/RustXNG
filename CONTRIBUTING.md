@@ -68,3 +68,12 @@ gh workflow run release.yml --ref main -f tag=vX.Y.Z --dry-run=false
 - 新しいファイルには SPDX ヘッダ（`// SPDX-License-Identifier: AGPL-3.0-or-later`）を推奨します
 - 上流 SearXNG のコード（Python）をコピーしないでください。URL・パラメータ・抽出項目といった仕様情報を参照し、Rust で実装してください
 - 上流に由来するデータを持ち込む場合は [NOTICE](NOTICE) に出典を追記してください
+
+## リポジトリサイズについて
+
+`bench/content-*.json`（商用 API の取得結果）と `index-data/`（自前インデックス）は**リポジトリに含めません**。再生成できるためです。
+
+- 商用 API の取得結果: `tools/collect_commercial.py`（各サービスの API キーが必要）
+- 自前インデックス: `rustxng-index crawl`（`docs/LOCAL-INDEX.md`）
+
+過去のコミットには 28 MB の JSON が残っています（HEAD からは削除済み）。履歴を掃除する場合は、全タグの force-push でリリースビルドが再実行されるため、GitHub Actions を一時停止したうえで `git filter-repo` を実行してください。
