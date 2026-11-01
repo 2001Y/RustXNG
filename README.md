@@ -1,5 +1,24 @@
 # RustXNG
 
+**ローカル AI エージェントのための、セルフホスト型 高速 Web 検索・Grounding エンジン。**
+
+API キーなし・0 円で、検索とページ本文の取得を 1 リクエストで返します。SSRF 対策済みで、社内ネットワークに置いても安全に動かせます。SearXNG のエンジン定義（226 種）を Rust に移植し、AI 用途の性能と安全性を足した実装です。
+
+```bash
+rustxng &
+curl "http://127.0.0.1:8888/search?q=...&format=json&include_raw_content=1"
+```
+
+| エージェントに必要な性質 | RustXNG |
+| --- | --- |
+| API キー・課金 | **不要（0 円）** |
+| 自分のサーバーで完結 | **可** |
+| 本文まで取得（Grounding） | **上位 5 件・約 32,000 字/リクエスト** |
+| 2 回目の検索 | **0.01 秒**（キャッシュ） |
+| 1 エンジンが落ちても動く | **180 エンジン並列＋自動休止** |
+| 信頼できない URL の取得 | **公開アドレスのみ（SSRF 対策）** |
+
+位置づけと設計意図は [docs/AI-INFRA.md](docs/AI-INFRA.md) にまとめています。
 [English](README.en.md)
 
 [![CI](https://github.com/sahenjp/RustXNG/actions/workflows/ci.yml/badge.svg)](https://github.com/sahenjp/RustXNG/actions/workflows/ci.yml)
@@ -248,6 +267,7 @@ cargo test          # 735 件、外部ネットワーク不要
 | [docs/BENCHMARK.md](docs/BENCHMARK.md) | 速度の測り方と実測値 |
 | [docs/LOCAL-INDEX.md](docs/LOCAL-INDEX.md) | 自前インデックス（実験機能・クロールと BM25 併合） |
 | [docs/RDSH.md](docs/RDSH.md) | rdsh からの使い方 |
+| [docs/AI-INFRA.md](docs/AI-INFRA.md) | **AI エージェントの情報取得層としての位置づけ** |
 | [docs/COMPARISON-EXA.md](docs/COMPARISON-EXA.md) | Exa との比較をやさしく解説 |
 | [SECURITY.md](SECURITY.md) | 脆弱性スキャンの結果と既知の注意点 |
 

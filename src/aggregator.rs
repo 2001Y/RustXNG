@@ -862,6 +862,13 @@ impl Searcher {
 
     /// The readable text of one page, `None` when it cannot be fetched.
     async fn page_text(&self, url: &str) -> Option<String> {
+        // Result URLs come from third-party engines, so treat them as untrusted:
+        // an engine (or a poisoned result) must not make us fetch localhost or
+        // the cloud metadata endpoint on its behalf.
+        if !crate::web::image_proxy::is_public_url(url) {
+            tracing::debug!(url, "refusing to fetch a non-public page");
+            return None;
+        }
         let request = crate::engine::EngineRequest::get(url)
             .header("Accept", "text/html,application/xhtml+xml;q=0.9,*/*;q=0.8");
         let response = self
