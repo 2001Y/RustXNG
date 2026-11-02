@@ -116,6 +116,10 @@ pub struct SearchResult {
     /// Readable page text, only when the request asked for raw content.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub raw_content: Option<String>,
+    /// The canonical URL the result's page declares for itself, only when
+    /// canonical re-ranking checked the page (`search.canonical_rerank`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub canonical_url: Option<String>,
     /// Whether the result belongs to the group of the previous one (UI only).
     #[serde(skip)]
     pub open_group: bool,
@@ -658,6 +662,12 @@ struct Authority {
 ///
 /// The list stays small and conservative: each entry is a site whose name is
 /// unambiguous enough to act on.
+///
+/// This hand-maintained list is the *fallback* signal: it applies when a
+/// page's own canonical declaration cannot be consulted (the default
+/// ranking never fetches pages). When `search.canonical_rerank` is enabled,
+/// the pages' `<link rel="canonical">` declarations are the primary signal
+/// and this list only covers the results that stage could not check.
 const AUTHORITIES: &[Authority] = &[
     Authority {
         names: &["arxiv"],
